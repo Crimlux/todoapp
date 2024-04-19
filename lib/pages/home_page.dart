@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.blue,
         centerTitle: true,
-        title: Text('TO DO'),
+        title: const Text('TO DO'),
       ),
       body: ListView.builder(
         itemCount: toDoList.length,
