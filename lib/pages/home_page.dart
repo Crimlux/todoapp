@@ -23,18 +23,34 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void saveNewTask() {
+    setState(() {
+      toDoList.add([_controller.text, false]);
+      _controller.clear();
+    });
+    Navigator.of(context).pop();
+  }
+
   void createNewTask() {
     showDialog(
       context: context, 
       builder: (context){
         return DialogBox(
-          controller: ,
+          controller: _controller,
+          onSave: saveNewTask,
+          onCancel: () => Navigator.of(context).pop(),
         );
       },
     );
   }
+
+  void deleteTask(int index) {
+    setState(() {
+      toDoList.removeAt(index);
+    });
+  }
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       appBar: AppBar(
@@ -43,16 +59,17 @@ class _HomePageState extends State<HomePage> {
         title: const Text('TO DO'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed:createNewTask,
-        child: Icon(Icons.add),
+        onPressed: createNewTask,
+        child: const Icon(Icons.add),
         ),
       body: ListView.builder(
         itemCount: toDoList.length,
         itemBuilder: (context, index) {
-          return ToDoTile(
+          return ToDoTile( 
             taskName: toDoList[index][0], 
             taskCompleted: toDoList[index][1], 
             onchanged: (value) => checkBoxChanged(value, index),
+            deleteFunction: (context) => deleteTask(index),
             );
         },
       )
